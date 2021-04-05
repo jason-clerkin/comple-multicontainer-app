@@ -27,7 +27,7 @@ const { Pool } = require("pg");
 const pgClient = new Pool({
 	user: keys.pgUser,
 	host: keys.pgHost,
-	port: keys.pgUser,
+	port: keys.pgPort,
 	database: keys.pgDatabase,
 	password: keys.pgPassword
 });
@@ -63,12 +63,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/values/all", async (req, res) => {
+	console.log("server -> /values/all");
 	const values = await pgClient.query("Select * from values");
 	// just send back relevant information
+	console.log("values.rows", values.rows);
 	res.send(values.rows);
 });
 
 app.get("/values/current", async (req, res) => {
+	console.log("server -> /current");
 	// get hash
 	// redis library for nodeJS doesn't have out of the box
 	// promise support which is why we have to use callbacks
@@ -80,6 +83,8 @@ app.get("/values/current", async (req, res) => {
 });
 
 app.post("/values", async (req, res) => {
+	console.log("server -> /values");
+
 	const index = req.body.index;
 
 	if (parseInt(index) > 40) {
@@ -101,5 +106,5 @@ app.post("/values", async (req, res) => {
 
 // The server is watching/listening for traffic on port 5000
 app.listen(5000, err => {
-  console.log('Listening');
-})
+	console.log("Listening");
+});
