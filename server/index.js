@@ -68,7 +68,7 @@ app.get("/values/all", async (req, res) => {
 	res.send(values.rows);
 });
 
-app.get("values/current", async (req, res) => {
+app.get("/values/current", async (req, res) => {
 	// get hash
 	// redis library for nodeJS doesn't have out of the box
 	// promise support which is why we have to use callbacks
