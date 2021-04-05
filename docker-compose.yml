@@ -1,0 +1,90 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:latest"
+    environment:
+      - POSTGRES_PASSWORD=postgres_password
+  redis:
+    image: "redis:latest"
+  nginx:
+    depends_on: 
+      - api
+      - client
+    # we always want running 
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+  # was server: changed becuase of default.conf
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      # usually . lookin in the current working directory
+      # I want you to use a context - src code in server directory
+      context: ./server
+      # so anytime our application tries to access antyting inside
+      # the app directory inside the container, except for the node modules
+      # folder, it's going to get redirected back to the server directory
+      # inside out current project folder
+    volumes:
+      # leave folder as is - dont redirect etc..
+      - /app/node_modules
+      # <-----------------
+      # any change (inside ./server) reflected inside the app folder
+      # of our container, don't have to re-build with change to source code
+      - ./server:/app
+
+    # variableName=Value => sets a variable in the container at *run time*
+    # Environment Variables are set at run time, only when the container is started up
+    # Information is not being encoded inside the image, image doesn't get created and have
+    # some memory of the environment variables. Only when cotainer is being created are the
+    # environmental variables set up inside the container
+
+    # variableName => sets a variable in the container at *run time*
+    # Values is taken from your computer e.g some secret api key
+
+    environment:
+      #  - is an array
+      # service name
+      - REDIS_HOST=redis
+      # expose port in the docker hub documentation
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      # service name
+      - PGHOST=postgres
+      - PGPORT=5432
+      # default database
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+
+    # stdin_open: true # docker run -i
+    # tty: true        # docker run -t
+  client:
+      stdin_open: true
+      build: 
+        dockerfile: Dockerfile.dev
+        context: ./client
+      # to make sure we don't have to constantly re-build
+      # the client image evertime we change some code inside there
+      volumes:
+        # make sure doesn't get over-written by
+        # any node_modules inside the client
+        - /app/node_modules
+        # everyting in the client direcrtory should be 
+        # shared with the app folder
+        - ./client:/app 
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - /app/node_modules
+      # map over
+      - ./worker:/app
+    environment:
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+
+      

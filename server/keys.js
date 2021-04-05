@@ -7,3 +7,8 @@ module.exports = {
 	pgDatabase: process.env.PGDATABASE,
 	pgPassword: process.env.PGPASSWORD
 };
+
+// hightlight word
+// command d several times - multi select
+// go right
+// command shift and right
