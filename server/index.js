@@ -63,15 +63,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/values/all", async (req, res) => {
-	console.log("server -> /values/all");
 	const values = await pgClient.query("Select * from values");
 	// just send back relevant information
-	console.log("values.rows", values.rows);
 	res.send(values.rows);
 });
 
 app.get("/values/current", async (req, res) => {
-	console.log("server -> /current");
 	// get hash
 	// redis library for nodeJS doesn't have out of the box
 	// promise support which is why we have to use callbacks
@@ -83,8 +80,6 @@ app.get("/values/current", async (req, res) => {
 });
 
 app.post("/values", async (req, res) => {
-	console.log("server -> /values");
-
 	const index = req.body.index;
 
 	if (parseInt(index) > 40) {
