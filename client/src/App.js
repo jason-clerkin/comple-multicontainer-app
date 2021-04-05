@@ -8,7 +8,9 @@ function App() {
 	return (
 		<Router>
 			<div className='App'>
-				<header className='App-header'>
+				<header
+					style={{ minHeight: "500px", marginBottom: "20px" }}
+					className='App-header'>
 					<img src={logo} className='App-logo' alt='logo' />
 					<Link to='/'>Home</Link>
 					<Link to='/otherpage'>Other Page</Link>
