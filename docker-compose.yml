@@ -7,16 +7,16 @@ services:
   redis:
     image: "redis:latest"
   nginx:
-    depends_on: 
+    depends_on:
       - api
       - client
-    # we always want running 
+    # we always want running
     restart: always
     build:
       dockerfile: Dockerfile.dev
       context: ./nginx
     ports:
-      - '3050:80'
+      - "3050:80"
   # was server: changed becuase of default.conf
   api:
     build:
@@ -62,19 +62,19 @@ services:
     # stdin_open: true # docker run -i
     # tty: true        # docker run -t
   client:
-      stdin_open: true
-      build: 
-        dockerfile: Dockerfile.dev
-        context: ./client
-      # to make sure we don't have to constantly re-build
-      # the client image evertime we change some code inside there
-      volumes:
-        # make sure doesn't get over-written by
-        # any node_modules inside the client
-        - /app/node_modules
-        # everyting in the client direcrtory should be 
-        # shared with the app folder
-        - ./client:/app 
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    # to make sure we don't have to constantly re-build
+    # the client image evertime we change some code inside there
+    volumes:
+      # make sure doesn't get over-written by
+      # any node_modules inside the client
+      - /app/node_modules
+      # everyting in the client direcrtory should be
+      # shared with the app folder
+      - ./client:/app
   worker:
     build:
       dockerfile: Dockerfile.dev
@@ -84,7 +84,5 @@ services:
       # map over
       - ./worker:/app
     environment:
-    - REDIS_HOST=redis
-    - REDIS_PORT=6379
-
-      
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
