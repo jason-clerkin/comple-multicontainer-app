@@ -40,4 +40,3 @@ script:
     - docker push jasonclerkin/multi-nginx 
     - docker push jasonclerkin/multi-server 
     - docker push jasonclerkin/multi-worker 
-    
