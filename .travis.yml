@@ -10,7 +10,7 @@ before_install:
 
 script:
   # default: npm test enters watch mode so doesn't exit ->CI=true (tests script eventually exists with status code of 0 or  not 0 if failed )
-  - docker run -e CI=true jasonclerkin/react-test npm run test
+  - docker run -e CI=true jasonclerkin/react-test npm test
   #  docker run myother project (run tests in other apps) overide start up command with e.g. npm test
 
   # add on the configuration that's going to build production version of all of our projects
