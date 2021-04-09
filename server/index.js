@@ -53,7 +53,6 @@ const redisClient = redis.createClient({
 // a connection is turned into a connection that is going
 // to listen, subscribe or publish information if cannot be used
 // for other purposes.
-
 const redisPublisher = redisClient.duplicate();
 
 // Express route handlers
