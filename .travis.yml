@@ -24,3 +24,20 @@ script:
     - docker build -t jasonclerkin/multi-nginx ./nginx
     - docker build -t jasonclerkin/multi-server ./server
     - docker build -t jasonclerkin/multi-worker ./worker
+
+    # Log in to the docker cli
+      # not going to write username, password in file ->
+      # Set up encrypted enviromental variables only accessible through travis ci
+      # https://travis-ci.com/github/jason-clerkin/multi-docker/settings
+    # login in step in one command (dont want to open wizard)
+    #  echo "$DOCKER_PASSWORD" will retrieve docker password from env variable
+    # and emit that over standard in as input to the next command
+    # essentially the command the other side of the pipe -> docker login -u "DOCKER_ID" --password-stdin
+    - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+
+   # Take those images and push them to docker hub
+    - docker push jasonclerkin/multi-client 
+    - docker push jasonclerkin/multi-nginx 
+    - docker push jasonclerkin/multi-server 
+    - docker push jasonclerkin/multi-worker 
+    
