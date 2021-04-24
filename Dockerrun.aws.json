@@ -10,7 +10,7 @@
 		},
 		{
 			"name": "server",
-			"image": "jasonclerkin/multi-sever",
+			"image": "jasonclerkin/multi-server",
 			"hostname": "api",
 			"essential": false,
 			"memory": 128
