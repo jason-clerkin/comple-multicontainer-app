@@ -4,7 +4,7 @@ COPY ./package.json ./
 RUN npm install
 COPY . .
 # build production version of our front-end assets
-# output of that wil be a folder isise the /app directory called build
+# output of that wil be a folder in the /app directory called build
 # that's where all our production assests gets placed
 RUN npm run build 
 
